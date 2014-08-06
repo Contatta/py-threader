@@ -1,6 +1,7 @@
 import Queue
 import threading
 import sys
+import time
 
 class TaskList(object):
     """
@@ -31,6 +32,8 @@ class TaskResult(object):
         self.name = None
         self.exception = None
         self.exec_method_name = None
+        self.start_time = None
+        self.stop_time = None
 
 
 class MethodThreader():
@@ -122,6 +125,7 @@ class MyThread(threading.Thread):
             task_result.exec_method_name = func.__name__
 
             try:
+                task_result.start_time = time.time()
                 task_result.result = func(**kwargs)
 
             except Exception:
@@ -132,5 +136,8 @@ class MyThread(threading.Thread):
             finally:
                 #Always return the task_result obj
                 self._output_q.put(task_result)
+
                 #Always mark the task done to handle exception cases
                 self._input_q.task_done()
+
+                task_result.stop_time = time.time()
