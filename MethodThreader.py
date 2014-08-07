@@ -134,10 +134,10 @@ class MyThread(threading.Thread):
                 task_result.exception = sys.exc_info()
 
             finally:
+                task_result.stop_time = time.time()
+
                 #Always return the task_result obj
                 self._output_q.put(task_result)
 
                 #Always mark the task done to handle exception cases
                 self._input_q.task_done()
-
-                task_result.stop_time = time.time()
