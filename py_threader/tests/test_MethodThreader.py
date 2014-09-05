@@ -1,5 +1,5 @@
-import MethodThreader
 import unittest
+from py_threader import MethodThreader
 
 
 def jobOne(value=None):
